@@ -85,22 +85,69 @@
     <div class="report-overlay"></div>
   </div>
 </section>
-<!-- Streamlit Dashboard (Process Automation Example) -->
-<div class="report-container streamlit">
-  <h3>Automated IT Jobs Tracker (Process Automation Example)</h3>
 
-  <div class="report-card">
-    <p>🔄 Updated daily — live job data scraped automatically from itjobs.pt</p>
-    <a href="https://itjobs-data-automation-2trfjkezjdncvdjajxrlqq.streamlit.app/" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="view-dashboard-btn">
-       🚀 View Live Dashboard
-    </a>
+
+<!-- Automation Workflow -->
+<section id="automation">
+  <h2>Process Automation Workflow</h2>
+
+  <div class="card workflow-card fade-in">
+    <p class="workflow-text">
+      This project demonstrates how Emalytics automates data collection and reporting.
+      Every day, a GitHub Action runs a Python scraper that extracts job postings from itjobs.pt,
+      updates a dataset, and automatically refreshes the interactive Streamlit dashboard shown above.
+    </p>
+
+    <div class="workflow-diagram">
+      <svg viewBox="0 0 850 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="850" height="300" fill="none"/>
+
+        <rect x="40" y="100" width="140" height="80" rx="15" ry="15" fill="#1E3A8A"/>
+        <text x="110" y="145" font-size="14" fill="white" text-anchor="middle">GitHub Actions</text>
+        <text x="110" y="165" font-size="12" fill="#A5B4FC" text-anchor="middle">Automated Scheduler</text>
+
+        <rect x="240" y="100" width="140" height="80" rx="15" ry="15" fill="#3B82F6"/>
+        <text x="310" y="145" font-size="14" fill="white" text-anchor="middle">Python Scraper</text>
+        <text x="310" y="165" font-size="12" fill="#E0E7FF" text-anchor="middle">BeautifulSoup + Pandas</text>
+
+        <rect x="440" y="100" width="140" height="80" rx="15" ry="15" fill="#1E3A8A"/>
+        <text x="510" y="145" font-size="14" fill="white" text-anchor="middle">CSV Dataset</text>
+        <text x="510" y="165" font-size="12" fill="#A5B4FC" text-anchor="middle">Job History Storage</text>
+
+        <rect x="640" y="100" width="140" height="80" rx="15" ry="15" fill="#3B82F6"/>
+        <text x="710" y="145" font-size="14" fill="white" text-anchor="middle">Streamlit Dashboard</text>
+        <text x="710" y="165" font-size="12" fill="#E0E7FF" text-anchor="middle">Live Visualization</text>
+
+        <line x1="180" y1="140" x2="240" y2="140" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow)" />
+        <line x1="380" y1="140" x2="440" y2="140" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow)" />
+        <line x1="580" y1="140" x2="640" y2="140" stroke="#6B7280" stroke-width="2" marker-end="url(#arrow)" />
+
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#6B7280"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
   </div>
-</div>
+</section>
 
 
+<!-- Streamlit Dashboard (Process Automation Example) -->
+    </div> <!-- fecha workflow-diagram -->
+
+    <!-- Dashboard Card centered below -->
+    <div class="workflow-dashboard-card fade-in">
+      <p>🔄 Updated daily — live job data scraped automatically from itjobs.pt</p>
+      <a href="https://itjobs-data-automation-2trfjkezjdncvdjajxrlqq.streamlit.app/" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="view-dashboard-btn">
+         🚀 View Live Dashboard
+      </a>
+    </div>
+  </div> <!-- fecha workflow-card -->
+</section>
 
   <!-- Contact -->
   <section id="contact">
