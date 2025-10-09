@@ -1,9 +1,6 @@
 # Ignore old version folder
 v1-static-card/
 
-# Ignore specific SVG logo file
-logo/logo_EMALYTICS.svg
-logo/logo_EMALYTICS_w.svg
+# Ignore logo folder (and everything inside it)
+logo/
 
-# Ignore logo folder
-logo\
