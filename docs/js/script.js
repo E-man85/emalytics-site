@@ -22,3 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   elements.forEach(el => observer.observe(el));
 });
+// === Header ===
+const phrases = [
+  "Turning data into insights.",
+  "Automating decisions with intelligence.",
+  "Empowering smarter business strategies."
+];
+
+let index = 0;
+const textElement = document.getElementById("dynamic-text");
+
+setInterval(() => {
+  index = (index + 1) % phrases.length;
+  textElement.textContent = phrases[index];
+}, 3500);
+

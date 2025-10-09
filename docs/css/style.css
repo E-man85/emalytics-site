@@ -321,3 +321,64 @@ a:hover {
   background: var(--primary);
   transform: scale(1.05);
 }
+/* Header */
+h1.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+header {
+  background: var(--primary); /* azul escuro */
+  color: #fff;
+  text-align: center;
+  padding: 8rem 1rem 5rem;
+  margin-top: 3.5rem;
+}
+
+/* Texto dinâmico com gradiente branco-laranja */
+#dynamic-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ffffff, #EC6D1D, #ffffff);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text; /* compatibilidade com WebKit */
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: whiteOrangeShift 5s ease-in-out infinite, fadeIn 1.5s ease-in-out;
+}
+
+/* Animação do gradiente */
+@keyframes whiteOrangeShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Fade-in inicial */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+  position: relative;
+  background: #1E3A8A; /* cor de fundo base */
+  color: white;
+  text-align: center;
+  padding: 8rem 1rem 5rem;
+  overflow: hidden;
+}
+
+
+
+
+
