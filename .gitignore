@@ -3,3 +3,7 @@ v1-static-card/
 
 # Ignore specific SVG logo file
 logo/logo_EMALYTICS.svg
+logo/logo_EMALYTICS_w.svg
+
+# Ignore logo folder
+logo\
