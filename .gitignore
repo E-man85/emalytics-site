@@ -18,3 +18,5 @@ docs/css/style.css
 env/
 .venv/
 
+# Ignore txt 
+google-site-verification.txt
