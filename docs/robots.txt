@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://emalytics.pt/sitemap.xml
