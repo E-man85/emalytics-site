@@ -4,3 +4,17 @@ v1-static-card/
 # Ignore logo folder (and everything inside it)
 logo/
 
+# Ignore VS Code settings
+.vscode/
+
+# Ignore Python cache and script
+__pycache__/
+minify_css.py
+
+# Ignore source CSS (only keep minified)
+docs/css/style.css
+
+# Ignore environment folders (just in case)
+env/
+.venv/
+
