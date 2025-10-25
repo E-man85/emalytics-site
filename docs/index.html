@@ -110,14 +110,39 @@
       LinkedIn
     </a>
   </p>
-
   </section>
-
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Emalytics. All rights reserved.</p>
   </footer>
+  <!-- === Tracking clicks on "View Case" buttons === -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // Power BI button
+      const btnPowerBI = document.querySelector('a[href="case-powerbi.html"]');
+      if (btnPowerBI) {
+        btnPowerBI.addEventListener('click', () => {
+          gtag('event', 'click_powerbi', {
+            event_category: 'Case Study',
+            event_label: 'Power BI Dashboard'
+          });
+        });
+      }
+
+      // Automation button
+      const btnAutomation = document.querySelector('a[href="case-automation.html"]');
+      if (btnAutomation) {
+        btnAutomation.addEventListener('click', () => {
+          gtag('event', 'click_automation', {
+            event_category: 'Case Study',
+            event_label: 'Process Automation'
+          });
+        });
+      }
+    });
+  </script>
+
 </body>
 <script src="js/script.js"></script>
-
 </html>
