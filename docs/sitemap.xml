@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
   <url>
     <loc>https://emalytics.pt/</loc>
+    <lastmod>2025-10-27</lastmod>
     <priority>1.0</priority>
   </url>
+
   <url>
     <loc>https://emalytics.pt/case-powerbi.html</loc>
+    <lastmod>2025-10-27</lastmod>
     <priority>0.8</priority>
   </url>
+
   <url>
     <loc>https://emalytics.pt/case-automation.html</loc>
+    <lastmod>2025-10-27</lastmod>
     <priority>0.8</priority>
   </url>
-</urlset>
-<url>
-  <loc>https://emalytics.pt/case-studies-sitemap.json</loc>
-  <priority>0.6</priority>
-</url>
 
+  <url>
+    <loc>https://emalytics.pt/case-analytics.html</loc>
+    <lastmod>2025-10-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
