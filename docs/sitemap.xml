@@ -13,3 +13,8 @@
     <priority>0.8</priority>
   </url>
 </urlset>
+<url>
+  <loc>https://emalytics.pt/case-studies-sitemap.json</loc>
+  <priority>0.6</priority>
+</url>
+

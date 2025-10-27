@@ -1,0 +1,35 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Emalytics Case Studies",
+  "description": "A collection of real-world data analytics and automation projects developed by Emalytics.",
+  "itemListElement": [
+    {
+      "@type": "CaseStudy",
+      "position": 1,
+      "headline": "Power BI Dashboard for Regional Insights",
+      "url": "https://emalytics.pt/case-powerbi.html",
+      "image": "https://emalytics.pt/images/logo_w.png",
+      "datePublished": "2025-10-27",
+      "keywords": "Power BI, INE 2023, Portugal demographics, Emalytics, data visualization"
+    },
+    {
+      "@type": "CaseStudy",
+      "position": 2,
+      "headline": "Process Automation Workflow for Data Reporting",
+      "url": "https://emalytics.pt/case-automation.html",
+      "image": "https://emalytics.pt/images/logo_w.png",
+      "datePublished": "2025-10-27",
+      "keywords": "process automation, Python, Power BI, data pipelines, Emalytics"
+    },
+    {
+      "@type": "CaseStudy",
+      "position": 3,
+      "headline": "Website Analytics Dashboard with Looker Studio",
+      "url": "https://emalytics.pt/case-analytics.html",
+      "image": "https://emalytics.pt/images/logo_w.png",
+      "datePublished": "2025-10-27",
+      "keywords": "website analytics, Looker Studio, Google Analytics 4, Emalytics, real-time dashboard"
+    }
+  ]
+}
