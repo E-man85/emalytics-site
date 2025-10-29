@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Open-Meteo Weather Widget</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Plotly for interactive charts -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+  <style>
+    :root { --bg:#ffffff; --fg:#111; --muted:#6b7280; --brand:#0ea5e9; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; color:var(--fg); background:var(--bg); }
+    .card { max-width: 920px; margin: 24px auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,.04); }
+    .title { margin: 0 0 4px; font-size: 20px; font-weight: 700; }
+    .caption { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+    .search-wrap { position: relative; }
+    .search { width: 100%; padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 16px; outline: none; }
+    .search:focus { border-color: var(--brand); box-shadow: 0 0 0 4px rgba(14,165,233,.15); }
+    .suggestions { position: absolute; z-index: 20; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px; max-height: 320px; overflow: auto; display: none; }
+    .suggestions.show { display: block; }
+    .suggestions button { width: 100%; text-align: left; padding: 10px 12px; border: 0; background: #fff; font-size: 15px; cursor: pointer; }
+    .suggestions button:hover { background: #f3f4f6; }
+    .row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin: 16px 0 4px; }
+    .kpi { border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px; }
+    .kpi .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .kpi .value { font-size: 18px; font-weight: 700; }
+    @media (max-width: 720px) {
+      .row { grid-template-columns: 1fr; }
+    }
+    .subtle { color: var(--muted); font-size: 14px; }
+
+    /* 🔘 Toggle switch for °C/°F */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #0ea5e9;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+  </style>
+
+  <!-- Leaflet for maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+  <div class="card" id="widget">
+    <h1 class="title">🌍 City Search — Open-Meteo</h1>
+    <p class="caption">Start typing a city name. Pick one from suggestions to see the forecast.</p>
+
+    <div class="search-wrap">
+      <input id="q" class="search" placeholder="e.g. Lisbon, Porto, Madrid…" autocomplete="off" />
+      <div id="suggestions" class="suggestions" role="listbox" aria-label="City suggestions"></div>
+    </div>
+
+    <div id="chosen" style="margin-top:16px;"></div>
+    <div id="map" style="height:400px; margin-top:20px; border-radius:12px; overflow:hidden;"></div>
+
+
+    <div style="margin-top:12px; display:flex; align-items:center; gap:10px;">
+    <label class="subtle" for="unit-toggle">Unit:</label>
+    <label class="switch">
+        <input type="checkbox" id="unit-toggle">
+        <span class="slider"></span>
+    </label>
+    <span id="unit-label" class="subtle">°C</span>
+    </div>
+
+    <div class="row" id="kpis" style="display:none;">
+      <div class="kpi">
+        <div class="label">Temperature</div>
+        <div class="value" id="kpi-temp">–</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Wind</div>
+        <div class="value" id="kpi-wind">–</div>
+      </div>
+      <div class="kpi">
+        <div class="label">When</div>
+        <div class="value" id="kpi-time">–</div>
+      </div>
+    </div>
+
+    <div id="chart" style="height:480px;margin-top:8px;"></div>
+    <p class="subtle" id="foot"></p>
+  </div>
+
+<script>
+/** -----------------------------
+ * Helpers
+ * ----------------------------- */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+const debounce = (fn, ms=300) => {
+  let t; return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
+};
+function buildLabel(r){
+  // Safely combine admin levels if present
+  const admins = ["admin1","admin2","admin3","admin4"].map(k => r[k]).filter(v => v);
+  const adminText = admins.length ? `, ${admins.join(", ")}` : "";
+  // Round lat/lon to 2 decimals for label
+  const lat = Number(r.latitude).toFixed(2);
+  const lon = Number(r.longitude).toFixed(2);
+  return `${r.name} — ${r.country}${adminText} (Lat: ${lat}, Lon: ${lon})`;
+}
+/** Keeps last query's results to resolve a label back to a full record */
+let lastResults = [];
+
+/** -----------------------------
+ * Geocoding (autocomplete)
+ * ----------------------------- */
+async function fetchCities(query){
+  const url = new URL("https://geocoding-api.open-meteo.com/v1/search");
+  url.search = new URLSearchParams({ name: query, count: 10, language: "en", format: "json" });
+  const r = await fetch(url);
+  if(!r.ok) throw new Error("Geocoding API error");
+  const j = await r.json();
+  const results = (j.results || []).map(x => ({
+    name: x.name, country: x.country,
+    admin1: x.admin1 || null, admin2: x.admin2 || null, admin3: x.admin3 || null, admin4: x.admin4 || null,
+    latitude: x.latitude, longitude: x.longitude, timezone: x.timezone || "auto"
+  }));
+  lastResults = results;
+  return results;
+}
+function renderSuggestions(list){
+  const box = $("#suggestions");
+  box.innerHTML = "";
+  if(!list.length){ box.classList.remove("show"); return; }
+  list.forEach((r, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.role = "option";
+    btn.setAttribute("aria-selected", "false");
+    btn.textContent = buildLabel(r);
+    btn.addEventListener("click", () => {
+      box.classList.remove("show");
+      $("#q").value = `${r.name}, ${r.country}`;
+      onCityPicked(r);
+    });
+    box.appendChild(btn);
+  });
+  box.classList.add("show");
+}
+const onQueryChange = debounce(async (e) => {
+  const q = e.target.value.trim();
+  if(!q){ $("#suggestions").classList.remove("show"); return; }
+  try{
+    const results = await fetchCities(q);
+    renderSuggestions(results);
+  }catch(err){
+    console.error(err);
+    renderSuggestions([]);
+  }
+}, 300);
+
+/** -----------------------------
+ * Unit Toggle (°C / °F)
+ * ----------------------------- */
+let currentUnit = "C"; // default
+
+const toggle = document.getElementById("unit-toggle");
+const label = document.getElementById("unit-label");
+
+toggle.addEventListener("change", () => {
+  currentUnit = toggle.checked ? "F" : "C";
+  label.textContent = currentUnit === "C" ? "°C" : "°F";
+
+  // Atualiza KPIs e gráfico se já houver dados
+  if (window.lastForecastData && window.lastCitySelected) {
+    updateUnits(window.lastForecastData, window.lastCitySelected);
+  }
+});
+
+function toF(c) { return (c * 9) / 5 + 32; }
+function convertTemperature(value) {
+  if (value == null) return null;
+  return currentUnit === "C" ? value : toF(value);
+}
+
+function updateUnits(forecastData, city) {
+  // Update KPIs
+  const current = forecastData.current_weather;
+  if (current) {
+    const t = convertTemperature(current.temperature);
+    document.getElementById("kpi-temp").textContent = `${t.toFixed(1)} °${currentUnit}`;
+  }
+
+  // Update chart
+  const df = forecastData.daily;
+  if (!df || !df.temperature_2m_max) return;
+
+  const dates = df.time.map(d => new Date(d));
+  const tmax = df.temperature_2m_max.map(convertTemperature);
+  const tmin = df.temperature_2m_min.map(convertTemperature);
+  const prcp = df.precipitation_sum;
+
+  const rangeTrace = {
+    x: [...dates, ...dates.slice().reverse()],
+    y: [...tmax, ...tmin.slice().reverse()],
+    type: "scatter", fill: "toself",
+    fillcolor: "rgba(135,206,250,0.28)",
+    line: {color: "rgba(0,0,0,0)"},
+    hoverinfo: "skip",
+    showlegend: false
+  };
+
+  const avg = tmax.map((v,i)=> (v + tmin[i]) / 2);
+  const avgTrace = {
+    x: dates, y: avg, type: "scatter", mode: "lines+markers",
+    name: `Avg Temp (°${currentUnit})`,
+    line: { width: 3 },
+    marker: { size: 6 },
+    hovertemplate: `%{x|%b %d}: %{y:.1f} °${currentUnit}`
+  };
+
+  const prcpTrace = {
+    x: dates, y: prcp, type: "bar",
+    name: "Precipitation (mm)",
+    marker: { color: "rgba(0,0,0,0.25)" },
+    yaxis: "y2",
+    hovertemplate: "Precipitation: %{y:.1f} mm"
+  };
+
+  const layout = {
+    title: { text: `7-Day Weather Forecast — ${city.name}`, x: 0.5, xanchor: "center" },
+    xaxis: { title: "Date", tickformat: "%b %d", showgrid: false },
+    yaxis: { title: `Temperature (°${currentUnit})` },
+    yaxis2: { title: "Precipitation (mm)", overlaying: "y", side: "right", showgrid: false },
+    legend: { orientation: "h", y: -0.2, x: 0.5, xanchor: "center" },
+    template: "plotly_white",
+    height: 480,
+    hovermode: "x unified",
+    margin: { l: 40, r: 40, t: 60, b: 40 }
+  };
+
+  Plotly.newPlot("chart", [rangeTrace, avgTrace, prcpTrace], layout, {displayModeBar: false, responsive: true});
+}
+
+
+/** -----------------------------
+ * Forecast + UI
+ * ----------------------------- */
+async function fetchForecast(lat, lon, tz="auto"){
+  const url = new URL("https://api.open-meteo.com/v1/forecast");
+  url.search = new URLSearchParams({
+    latitude: lat, longitude: lon, timezone: tz,
+    current_weather: "true",
+    daily: "temperature_2m_max,temperature_2m_min,precipitation_sum"
+  });
+  const r = await fetch(url);
+  if(!r.ok) throw new Error("Forecast API error");
+  return await r.json();
+}
+function setKPIs(current){
+  $("#kpis").style.display = current ? "grid" : "none";
+  if(!current) return;
+  $("#kpi-temp").textContent = `${current.temperature ?? "–"} °C`;
+  $("#kpi-wind").textContent = `${current.windspeed ?? "–"} km/h ↗ ${current.winddirection ?? "–"}°`;
+  // current.time is ISO in local tz (from API)
+  $("#kpi-time").textContent = current.time?.replace("T"," ") || "–";
+}
+function renderChart(cityName, daily){
+  if(!daily || !daily.time) { Plotly.purge("chart"); return; }
+  const dates = daily.time.map(d => new Date(d));
+  const tmax = daily.temperature_2m_max;
+  const tmin = daily.temperature_2m_min;
+  const prcp = daily.precipitation_sum;
+
+  // Shaded range between min and max
+  const rangeTrace = {
+    x: [...dates, ...dates.slice().reverse()],
+    y: [...tmax, ...tmin.slice().reverse()],
+    type: "scatter", fill: "toself",
+    fillcolor: "rgba(135,206,250,0.28)",
+    line: {color: "rgba(0,0,0,0)"},
+    hoverinfo: "skip",
+    showlegend: false
+  };
+
+  // Average temperature
+  const avg = tmax.map((v,i)=> (v + tmin[i]) / 2);
+  const avgTrace = {
+    x: dates, y: avg, type: "scatter", mode: "lines+markers",
+    name: "Avg Temp (°C)",
+    line: { width: 3 },
+    marker: { size: 6 },
+    hovertemplate: "%{x|%b %d}: %{y:.1f} °C"
+  };
+
+  // Precipitation bars on secondary axis
+  const prcpTrace = {
+    x: dates, y: prcp, type: "bar",
+    name: "Precipitation (mm)",
+    marker: { color: "rgba(0,0,0,0.25)" },
+    yaxis: "y2",
+    hovertemplate: "Precipitation: %{y:.1f} mm"
+  };
+
+  const layout = {
+    title: { text: `7-Day Weather Forecast — ${cityName}`, x: 0.5, xanchor: "center" },
+    xaxis: { title: "Date", tickformat: "%b %d", showgrid: false },
+    yaxis: { title: "Temperature (°C)" },
+    yaxis2: { title: "Precipitation (mm)", overlaying: "y", side: "right", showgrid: false },
+    legend: { orientation: "h", y: -0.2, x: 0.5, xanchor: "center" },
+    template: "plotly_white",
+    height: 480,
+    hovermode: "x unified",
+    margin: { l: 40, r: 40, t: 60, b: 40 }
+  };
+
+  Plotly.newPlot("chart", [rangeTrace, avgTrace, prcpTrace], layout, {displayModeBar: false, responsive: true});
+}
+function onCityPicked(rec){
+  // Show chosen city
+  const admins = ["admin1","admin2","admin3","admin4"].map(k => rec[k]).filter(Boolean);
+  $("#chosen").innerHTML = `
+    <div class="subtle">
+      <strong>Selected:</strong> ${rec.name} — ${rec.country}${admins.length ? ", " + admins.join(", ") : ""}<br/>
+      <strong>Coords:</strong> ${Number(rec.latitude).toFixed(4)}, ${Number(rec.longitude).toFixed(4)} ·
+      <strong>Timezone:</strong> ${rec.timezone}
+    </div>
+  `;
+
+  // Fetch forecast, update KPIs + chart + footer
+  fetchForecast(rec.latitude, rec.longitude, rec.timezone)
+    .then(data => {
+      window.lastForecastData = data;
+      window.lastCitySelected = rec;
+      setKPIs(data.current_weather || null);
+      renderChart(rec.name, data.daily || {});
+      const elev = (data.elevation != null) ? `${data.elevation} m` : "n/a";
+      $("#foot").textContent = `Source: Open-Meteo • Elevation: ${elev}`;
+    })
+    .catch(err => {
+      console.error(err);
+      $("#kpis").style.display = "none";
+      Plotly.purge("chart");
+      $("#foot").textContent = "Could not load forecast.";
+    });
+    renderMap(rec.latitude, rec.longitude, rec.name);
+}
+
+/** -----------------------------
+ * Wire up events
+ * ----------------------------- */
+$("#q").addEventListener("input", onQueryChange);
+document.addEventListener("click", (e) => {
+  if(!$("#widget").contains(e.target)) $("#suggestions").classList.remove("show");
+});
+
+/** -----------------------------
+ * Map rendering with Leaflet
+ * ----------------------------- */
+let mapInstance = null;
+function renderMap(lat, lon, name) {
+  const mapDiv = document.getElementById("map");
+  if (!mapDiv) return;
+
+  // Create or reset map
+  if (mapInstance) {
+    mapInstance.remove(); // clear previous map
+  }
+
+  mapInstance = L.map("map", { scrollWheelZoom: false }).setView([lat, lon], 10);
+
+  // Add OpenStreetMap tiles
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18,
+  }).addTo(mapInstance);
+
+  // Add marker
+  L.marker([lat, lon])
+    .addTo(mapInstance)
+    .bindPopup(`<strong>${name}</strong><br>${lat.toFixed(3)}, ${lon.toFixed(3)}`)
+    .openPopup();
+}
+
+</script>
+</body>
+</html>
