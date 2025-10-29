@@ -31,5 +31,12 @@
     <loc>https://emalytics.pt/case-weather.html</loc>
     <priority>0.8</priority>
   </url>
+  <!-- Emalytics POI Finder -->
+  <url>
+    <loc>https://emalytics.pt/case-poi.html</loc>
+    <lastmod>2025-10-29</lastmod>
+    <priority>0.85</priority>
+  </url>
 
 </urlset>
+

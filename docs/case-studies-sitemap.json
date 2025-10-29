@@ -39,6 +39,15 @@
       "image": "https://emalytics.pt/images/logo_w.png",
       "datePublished": "2025-10-29",
       "keywords": "weather forecast, Open-Meteo API, Python, web app, Emalytics"
+    },
+        {
+      "@type": "CaseStudy",
+      "position": 5,
+      "headline": "POI Finder App with FastAPI and Docker",
+      "url": "https://emalytics.pt/case-poi.html",
+      "image": "https://emalytics.pt/images/logo_w.png",
+      "datePublished": "2025-10-29",
+      "keywords": "FastAPI, Docker, OpenStreetMap, Leaflet, POI Finder, geospatial data, Emalytics, web app"
     }
   ]
 }

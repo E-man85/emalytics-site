@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <meta name="description" content="Case study showcasing how Emalytics developed a FastAPI and Docker-based web application to visualize nearby Points of Interest using OpenStreetMap data.">
+  <meta name="keywords" content="FastAPI, Docker, OpenStreetMap, Leaflet, geospatial data, API project, POI Finder, Emalytics, case study, web development">
+  <meta name="author" content="Emalytics">
+  <title>Emalytics | POI Finder with Docker and FastAPI</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.min.css">
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HF0R24D4MJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-HF0R24D4MJ');
+  </script>
+
+  <!-- Structured Data (Case Study) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CaseStudy",
+    "headline": "Emalytics POI Finder",
+    "alternativeHeadline": "Geospatial web app containerized with Docker using FastAPI and Leaflet",
+    "description": "This case study by Emalytics showcases a full-stack geospatial application built with FastAPI, Leaflet, and Docker. The app integrates with OpenStreetMap via the Overpass API to allow users to explore nearby points of interest.",
+    "author": {
+      "@type": "Organization",
+      "name": "Emalytics",
+      "url": "https://emalytics.pt/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Emalytics",
+      "url": "https://emalytics.pt/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://emalytics.pt/images/logo_w.png"
+      }
+    },
+    "datePublished": "2025-10-29",
+    "mainEntityOfPage": "https://emalytics.pt/case-poi.html",
+    "image": "https://emalytics.pt/images/logo_w.png",
+    "inLanguage": "en",
+    "keywords": "FastAPI, Docker, OpenStreetMap, Leaflet, geospatial app, POI Finder, case study, Emalytics"
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="https://emalytics.pt/">
+        <img src="images/logo_w.png" alt="Emalytics Logo" class="nav-logo">
+      </a>
+
+      <!-- Hamburger -->
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+
+      <!-- Links -->
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#cases">Cases</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="login.html">Customers</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO TITLE -->
+  <section class="case-hero">
+    <div class="hero-content">
+      <p class="animated-text">Exploring geospatial data with FastAPI, Docker, and OpenStreetMap.</p>
+    </div>
+  </section>
+
+  <!-- Include JS for menu -->
+  <script src="js/script.js"></script>
+
+  <!-- MAIN CONTENT -->
+  <section class="case-page">
+    <h1>Emalytics POI Finder</h1>
+
+    <p>
+      <strong>Emalytics POI Finder</strong> is a full-stack web application developed to explore and visualize 
+      nearby <strong>Points of Interest (POIs)</strong> such as schools, pharmacies, and restaurants using 
+      <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> data.
+      <br><br>
+      Built with <strong>FastAPI</strong> and <strong>Leaflet.js</strong>, and fully <strong>containerized with Docker</strong>, 
+      this project demonstrates how geospatial APIs can be efficiently deployed and scaled using modern cloud 
+      infrastructure like <strong>Render.com</strong>.
+    </p>
+
+    <!-- DEMO APP -->
+    <div class="report-container">
+    <iframe 
+        width="100%" height="640" 
+        src="https://emalytics-poi-finder.onrender.com/"
+        frameborder="0" 
+        style="border:0; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);" 
+        allowfullscreen 
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms">
+    </iframe>
+    </div>
+    <a href="index.html#cases" class="back-btn">← Back to Cases</a>
+
+
+  </section>
+</body>
+</html>
