@@ -30,6 +30,15 @@
       "image": "https://emalytics.pt/images/logo_w.png",
       "datePublished": "2025-10-27",
       "keywords": "website analytics, Looker Studio, Google Analytics 4, Emalytics, real-time dashboard"
+    },
+    {
+      "@type": "CaseStudy",
+      "position": 4,
+      "headline": "Weather Forecast App using Open-Meteo API",
+      "url": "https://emalytics.pt/case-weather.html",
+      "image": "https://emalytics.pt/images/logo_w.png",
+      "datePublished": "2025-10-29",
+      "keywords": "weather forecast, Open-Meteo API, Python, web app, Emalytics"
     }
   ]
 }
