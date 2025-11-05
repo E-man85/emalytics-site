@@ -130,6 +130,13 @@
     <a href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank" rel="noopener noreferrer">
       LinkedIn
     </a>
+      <!-- teste -->
+  <!-- Online Users -->
+  <section id="online-users">
+    <h2>Visitors</h2>
+    <p><span id="online-count">0</span> users online</p>
+  </section>
+  <!-- teste -->
   </p>
   </section>
   <!-- Footer -->
@@ -163,7 +170,60 @@
       }
     });
   </script>
+<!-- teste -->
+<script>
+const API_URL = "http://46.224.11.194/api";  // Your API endpoint on the VPS
+let sessionId = null;
 
+// 1️⃣ Create a new session when the page loads
+async function createSession() {
+  try {
+    const res = await fetch(`${API_URL}/session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+    const data = await res.json();
+    sessionId = data.sessionId;
+  } catch (err) {
+    console.error("Error creating session:", err);
+  }
+}
+
+// 2️⃣ Mark the session as inactive when the user leaves
+async function deactivateSession() {
+  if (!sessionId) return;
+  try {
+    await fetch(`${API_URL}/session/inactive`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId })
+    });
+  } catch (err) {
+    console.error("Error deactivating session:", err);
+  }
+}
+
+// 3️⃣ Update the number of online users
+async function updateOnlineCount() {
+  try {
+    const res = await fetch(`${API_URL}/online-count`);
+    const data = await res.json();
+    const element = document.getElementById("online-count");
+    if (element) element.textContent = data.online;
+  } catch (err) {
+    console.error("Error fetching online count:", err);
+  }
+}
+
+// 4️⃣ Initialize functions
+createSession();
+updateOnlineCount();
+setInterval(updateOnlineCount, 5000); // Refresh every 5 seconds
+window.addEventListener("beforeunload", deactivateSession);
+</script>
+
+<!-- teste -->
 </body>
 <script src="js/script.js" defer></script>
 </html>
