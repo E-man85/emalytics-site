@@ -136,6 +136,9 @@
     <h2>Visitors</h2>
     <p><span id="online-count">0</span> users online</p>
   </section>
+  <div style="width: 100%; max-width: 600px; margin: 30px auto;">
+    <canvas id="visitorsChart"></canvas>
+  </div>
   <!-- teste -->
   </p>
   </section>
@@ -171,11 +174,13 @@
     });
   </script>
 <!-- teste -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const API_URL = "https://api.emalytics.pt";  // Your API endpoint on the VPS
+const API_URL = "https://api.emalytics.pt";  
 let sessionId = null;
 
-// 1️⃣ Create a new session when the page loads
+// 1️⃣ Create new session
 async function createSession() {
   try {
     const res = await fetch(`${API_URL}/session`, {
@@ -190,7 +195,7 @@ async function createSession() {
   }
 }
 
-// 2️⃣ Mark the session as inactive when the user leaves
+// 2️⃣ Deactivate session
 async function deactivateSession() {
   if (!sessionId) return;
   try {
@@ -204,24 +209,81 @@ async function deactivateSession() {
   }
 }
 
-// 3️⃣ Update the number of online users
+// 3️⃣ Update online counter
 async function updateOnlineCount() {
   try {
     const res = await fetch(`${API_URL}/online-count`);
     const data = await res.json();
-    const element = document.getElementById("online-count");
-    if (element) element.textContent = data.online;
+    document.getElementById("online-count").textContent = data.online;
   } catch (err) {
-    console.error("Error fetching online count:", err);
+    console.error("Error getting online count:", err);
   }
 }
 
-// 4️⃣ Initialize functions
+// 4️⃣ Load hourly visit data
+async function loadVisitsData() {
+  try {
+    const res = await fetch(`${API_URL}/visits`);
+    const visits = await res.json();
+
+    // Count sessions started per hour
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const counts = hours.map(h => {
+      return visits.filter(v => new Date(v.startTime).getHours() === h).length;
+    });
+
+    updateChart(hours, counts);
+  } catch (err) {
+    console.error("Error loading visit data:", err);
+  }
+}
+
+// 5️⃣ Setup Chart.js
+const ctx = document.getElementById("visitorsChart").getContext("2d");
+const visitorsChart = new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`),
+    datasets: [{
+      label: "Visits per hour",
+      data: Array(24).fill(0),
+      backgroundColor: "#38bdf8"
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Visits registered by hour",
+        color: "#1e293b"
+      }
+    },
+    scales: {
+      x: { ticks: { color: "#1e293b" } },
+      y: { ticks: { color: "#1e293b", precision: 0 }, beginAtZero: true }
+    }
+  }
+});
+
+// 6️⃣ Update chart data
+function updateChart(hours, counts) {
+  visitorsChart.data.datasets[0].data = counts;
+  visitorsChart.update();
+}
+
+// 7️⃣ Init and refresh every 60s
 createSession();
 updateOnlineCount();
-setInterval(updateOnlineCount, 5000); // Refresh every 5 seconds
+loadVisitsData();
+setInterval(() => {
+  updateOnlineCount();
+  loadVisitsData();
+}, 60000); // refresh every minute
 window.addEventListener("beforeunload", deactivateSession);
 </script>
+
 
 <!-- teste -->
 </body>
