@@ -101,3 +101,149 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3500);
   }
 });
+
+// ==============================
+// Online Users + Chart Section
+// ==============================
+const API_URL = "https://api.emalytics.pt";  
+let sessionId = null;
+
+// --- Create new session ---
+async function createSession() {
+  try {
+    const res = await fetch(`${API_URL}/session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+    const data = await res.json();
+    sessionId = data.sessionId;
+  } catch (err) {
+    console.error("Error creating session:", err);
+  }
+}
+
+// --- Deactivate session ---
+async function deactivateSession() {
+  if (!sessionId) return;
+  try {
+    await fetch(`${API_URL}/session/inactive`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId })
+    });
+  } catch (err) {
+    console.error("Error deactivating session:", err);
+  }
+}
+
+// --- Update online counter ---
+async function updateOnlineCount() {
+  try {
+    const res = await fetch(`${API_URL}/online-count`);
+    const data = await res.json();
+    document.getElementById("online-count").textContent = data.online;
+  } catch (err) {
+    console.error("Error getting online count:", err);
+  }
+}
+
+// --- Load hourly data and compute percentage ---
+async function loadVisitsData() {
+  try {
+    const res = await fetch(`${API_URL}/visits`);
+    const visits = await res.json();
+
+    // Count visits per hour
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const counts = hours.map(h => visits.filter(v => new Date(v.startTime).getHours() === h).length);
+
+    // Convert to percentage of total
+    const total = counts.reduce((sum, n) => sum + n, 0);
+    const percentages = total > 0 ? counts.map(n => (n / total * 100).toFixed(2)) : Array(24).fill(0);
+
+    // Highlight current hour
+    const currentHour = new Date().getHours();
+    const colors = hours.map(h => (h === currentHour ? "#3B82F6" : "#1E3A8A"));
+
+    updateChart(hours, percentages, colors);
+  } catch (err) {
+    console.error("Error loading visit data:", err);
+  }
+}
+
+// --- Initialize Chart.js ---
+const ctx = document.getElementById("visitorsChart").getContext("2d");
+const visitorsChart = new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`),
+    datasets: [{
+      label: "% of total visits",
+      data: Array(24).fill(0),
+      backgroundColor: Array(24).fill("#1E3A8A"),
+      borderWidth: 1,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Hourly traffic distribution (%)",
+        color: "#333333",
+        font: { size: 16, weight: "bold" }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.formattedValue}% of total visits`
+        }
+      },
+      datalabels: {
+        color: "#3B82F6",
+        anchor: "end",
+        align: "end",
+        font: {
+          weight: "bold",
+          size: 12
+        },
+        formatter: (value, context) => {
+          const hour = context.dataIndex;
+          const currentHour = new Date().getHours();
+          return hour === currentHour ? "Now" : "";
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: "#333333" },
+        grid: { display: false }
+      },
+      y: {
+        ticks: { color: "#333333", callback: v => `${v}%` },
+        beginAtZero: true,
+        max: 100
+      }
+    }
+  },
+  plugins: [ChartDataLabels]
+});
+
+// --- Update chart ---
+function updateChart(hours, percentages, colors) {
+  visitorsChart.data.datasets[0].data = percentages;
+  visitorsChart.data.datasets[0].backgroundColor = colors;
+  visitorsChart.update();
+}
+
+// --- Init + refresh ---
+createSession();
+updateOnlineCount();
+loadVisitsData();
+setInterval(() => {
+  updateOnlineCount();
+  loadVisitsData();
+}, 60000);
+window.addEventListener("beforeunload", deactivateSession);

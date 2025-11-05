@@ -119,37 +119,39 @@
   <!-- Contact -->
   <section id="contact">
     <h2>Contact</h2>
-  <p>
-    For inquiries or collaborations, reach out at: 
-    <a href="mailto:EmanuelGomes@Emanlytics.onmicrosoft.com">
-      EmanuelGomes@Emanlytics.onmicrosoft.com
-    </a>
-  </p>
-  <p>
-    Connect on 
-    <a href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank" rel="noopener noreferrer">
-      LinkedIn
-    </a>
-      <!-- teste -->
-  <!-- Online Users -->
-  <section id="online-users">
+    <p>
+      For inquiries or collaborations, reach out at: 
+      <a href="mailto:EmanuelGomes@Emanlytics.onmicrosoft.com">
+        EmanuelGomes@Emanlytics.onmicrosoft.com
+      </a>
+    </p>
+    <p>
+      Connect on 
+      <a href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank" rel="noopener noreferrer">
+        LinkedIn
+      </a>
+    </p>
+  </section>
+
+<!-- Online Users -->
+<section id="online-users" class="services">
+  <div class="card">
     <h2>Visitors</h2>
     <p><span id="online-count">0</span> users online</p>
-  </section>
-  <div style="width: 100%; max-width: 600px; margin: 30px auto;">
-    <canvas id="visitorsChart"></canvas>
+    <div style="width: 100%; max-width: 500px; margin: 20px auto;">
+      <canvas id="visitorsChart"></canvas>
+    </div>
   </div>
-  <!-- teste -->
-  </p>
-  </section>
+</section>
+
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Emalytics. All rights reserved.</p>
   </footer>
+
   <!-- === Tracking clicks on "View Case" buttons === -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-
       // Power BI button
       const btnPowerBI = document.querySelector('a[href="case-powerbi.html"]');
       if (btnPowerBI) {
@@ -173,119 +175,12 @@
       }
     });
   </script>
-<!-- teste -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const API_URL = "https://api.emalytics.pt";  
-let sessionId = null;
+  <!-- External libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 
-// 1️⃣ Create new session
-async function createSession() {
-  try {
-    const res = await fetch(`${API_URL}/session`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({})
-    });
-    const data = await res.json();
-    sessionId = data.sessionId;
-  } catch (err) {
-    console.error("Error creating session:", err);
-  }
-}
-
-// 2️⃣ Deactivate session
-async function deactivateSession() {
-  if (!sessionId) return;
-  try {
-    await fetch(`${API_URL}/session/inactive`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionId })
-    });
-  } catch (err) {
-    console.error("Error deactivating session:", err);
-  }
-}
-
-// 3️⃣ Update online counter
-async function updateOnlineCount() {
-  try {
-    const res = await fetch(`${API_URL}/online-count`);
-    const data = await res.json();
-    document.getElementById("online-count").textContent = data.online;
-  } catch (err) {
-    console.error("Error getting online count:", err);
-  }
-}
-
-// 4️⃣ Load hourly visit data
-async function loadVisitsData() {
-  try {
-    const res = await fetch(`${API_URL}/visits`);
-    const visits = await res.json();
-
-    // Count sessions started per hour
-    const hours = Array.from({ length: 24 }, (_, i) => i);
-    const counts = hours.map(h => {
-      return visits.filter(v => new Date(v.startTime).getHours() === h).length;
-    });
-
-    updateChart(hours, counts);
-  } catch (err) {
-    console.error("Error loading visit data:", err);
-  }
-}
-
-// 5️⃣ Setup Chart.js
-const ctx = document.getElementById("visitorsChart").getContext("2d");
-const visitorsChart = new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`),
-    datasets: [{
-      label: "Visits per hour",
-      data: Array(24).fill(0),
-      backgroundColor: "#38bdf8"
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: "Visits registered by hour",
-        color: "#1e293b"
-      }
-    },
-    scales: {
-      x: { ticks: { color: "#1e293b" } },
-      y: { ticks: { color: "#1e293b", precision: 0 }, beginAtZero: true }
-    }
-  }
-});
-
-// 6️⃣ Update chart data
-function updateChart(hours, counts) {
-  visitorsChart.data.datasets[0].data = counts;
-  visitorsChart.update();
-}
-
-// 7️⃣ Init and refresh every 60s
-createSession();
-updateOnlineCount();
-loadVisitsData();
-setInterval(() => {
-  updateOnlineCount();
-  loadVisitsData();
-}, 60000); // refresh every minute
-window.addEventListener("beforeunload", deactivateSession);
-</script>
-
-
-<!-- teste -->
+  <!-- Your site script -->
+  <script src="js/script.js" defer></script>
 </body>
-<script src="js/script.js" defer></script>
 </html>
