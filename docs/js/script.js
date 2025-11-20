@@ -86,11 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================
      Rotating header text (safe)
   ========================== */
-  const phrases = [
-    "Turning data into insights.",
-    "Automating decisions with intelligence.",
-    "Empowering smarter business strategies.",
-  ];
+  const phrases = window.rotatingPhrases || [];
+
   let index = 0;
   const textElement = document.getElementById("dynamic-text");
 

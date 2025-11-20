@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Emalytics provides data analysis, process automation and interactive dashboards tailored to your business needs.">
+  <meta name="keywords" content="data analysis, automation, Power BI, dashboards, Emalytics, analytics consultant, process optimization">
+  <meta name="author" content="Emalytics">
+  <link rel="alternate" type="application/ld+json" href="https://emalytics.pt/case-studies-sitemap.json">
+  <title>Emalytics - Data Analytics & Automation</title>
+  <link rel="stylesheet" href="css/style.min.css">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HF0R24D4MJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HF0R24D4MJ');
+  </script>
+</head>
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="https://emalytics.pt/">
+      <img src="images/logo_w.png" alt="Emalytics Logo" class="nav-logo">
+    </a>
+    <!-- Botão hamburger -->
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+
+    <!-- Links -->
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#cases">Cases</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="login.html">Customers</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Language Switcher -->
+<div class="language-switch" style="position: fixed; top: 15px; right: 15px; z-index: 2000; font-size: 0.9rem;">
+  <a href="index.html" style="margin-right: 10px; text-decoration:none;">🇵🇹 PT</a>
+  <a href="en.html" style="text-decoration:none;">🇬🇧 EN</a>
+</div>
+
+
+  <!-- Header -->
+  <header id="home">
+    <h1 class="visually-hidden">Emalytics</h1>
+    <p id="dynamic-text">Turning data into insights.</p>
+  </header>
+
+  <!-- About -->
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      Emalytics is a micro-consulting practice specializing in data analysis, process automation, and interactive dashboard development.
+      We help small businesses make faster, clearer decisions through agile and tailored solutions — without the complexity of large consulting firms.
+      Our practical experience includes projects across different business areas, focusing on turning scattered data into useful insights, automating repetitive tasks, and creating visual reports that support everyday decision-making.
+      The goal is simple: fast, efficient, and customized solutions, regardless of the industry.
+    </p>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <h2>Services</h2>
+    <div class="services">
+      <div class="card">
+        <h3>Data Analysis</h3>
+        <p>Transforming raw data into meaningful insights to support better decision-making.</p>
+      </div>
+      <div class="card">
+        <h3>Process Automation</h3>
+        <p>Automating repetitive tasks to save time, reduce errors, and increase efficiency.</p>
+      </div>
+      <div class="card">
+        <h3>Reports & Dashboards</h3>
+        <p>Designing interactive reports and dashboards using Power BI and other tools.</p>
+      </div>
+    </div>
+  </section>
+
+<!-- Cases -->
+<section id="cases">
+  <h2>Case Studies</h2>
+  <div class="services">
+
+    <div class="card">
+      <h3>Power BI Dashboard</h3>
+      <p>Interactive report showcasing data-driven insights and visual storytelling.</p>
+      <a href="case-powerbi.html" class="case-link">View case</a>
+    </div>
+
+    <div class="card">
+      <h3>Process Automation</h3>
+      <p>Automation project improving efficiency and reducing manual work in reporting pipelines.</p>
+      <a href="case-automation.html" class="case-link">View case</a>
+    </div>
+
+    <div class="card">
+      <h3>Website Analytics</h3>
+      <p>Real-time monitoring of website traffic and user interactions through Looker Studio.</p>
+      <a href="case-analytics.html" class="case-link">View case</a>
+    </div>
+
+    <!-- 🔹 Weather Forecast App -->
+    <div class="card">
+      <h3>Weather Forecast App</h3>
+      <p>Interactive app using the Open-Meteo API to display current temperature and a 7-day forecast for any selected city.</p>
+      <a href="case-weather.html" class="case-link">View case</a>
+    </div>
+    <!-- 🔹 POI Finder -->
+    <div class="card">
+      <h3>POI Finder</h3>
+      <p>Full-stack web app built with FastAPI and Leaflet, containerized with Docker. It allows users to explore nearby Points of Interest (schools, pharmacies, restaurants) using OpenStreetMap data.</p>
+      <a href="case-poi.html" class="case-link">View case</a>
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>
+      For inquiries or collaborations, reach out at: 
+      <a href="mailto:EmanuelGomes@Emanlytics.onmicrosoft.com">
+        EmanuelGomes@Emanlytics.onmicrosoft.com
+      </a>
+    </p>
+    <p>
+      Connect on 
+      <a href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank" rel="noopener noreferrer">
+        LinkedIn
+      </a>
+    </p>
+  </section>
+
+<!-- Online Users -->
+<section id="online-users" class="services">
+  <div class="card">
+    <h2>Visitors</h2>
+    <p><span id="online-count">0</span> users online</p>
+    <div style="width: 100%; max-width: 500px; margin: 20px auto;">
+      <canvas id="visitorsChart"></canvas>
+    </div>
+      <p style="text-align:center; max-width:600px; margin:10px auto; color:var(--neutral); font-size:0.85rem; line-height:1.4;">
+  ℹ️ A <strong>visitor</strong> represents an active session identified by a unique session ID.  
+  Sessions are created when a user opens the page and marked inactive when the tab is closed or becomes idle.  
+  The counter updates automatically every 5 seconds in real time.
+</p>
+  </div>
+
+</section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Emalytics. All rights reserved.</p>
+  </footer>
+
+  <!-- === Tracking clicks on "View Case" buttons === -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Power BI button
+      const btnPowerBI = document.querySelector('a[href="case-powerbi.html"]');
+      if (btnPowerBI) {
+        btnPowerBI.addEventListener('click', () => {
+          gtag('event', 'click_powerbi', {
+            event_category: 'Case Study',
+            event_label: 'Power BI Dashboard'
+          });
+        });
+      }
+
+      // Automation button
+      const btnAutomation = document.querySelector('a[href="case-automation.html"]');
+      if (btnAutomation) {
+        btnAutomation.addEventListener('click', () => {
+          gtag('event', 'click_automation', {
+            event_category: 'Case Study',
+            event_label: 'Process Automation'
+          });
+        });
+      }
+    });
+  </script>
+
+  <!-- External libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+  <!-- Your site script -->
+   <script>
+    window.rotatingPhrases = [
+      "Turn your data into fast decisions.",
+      "Create clear dashboards to help your business grow.",
+      "Automate tasks and save time every day.",
+    ];
+  </script>
+  <script src="js/script.js" defer></script>
+</body>
+</html>

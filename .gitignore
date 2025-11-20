@@ -20,3 +20,6 @@ env/
 
 # Ignore txt 
 google-site-verification.txt
+
+# Ignore personal notes and docs 
+analise_gpt.docx
