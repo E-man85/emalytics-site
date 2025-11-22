@@ -56,7 +56,7 @@
     <h2>About</h2>
     <p>
       Emalytics is a micro-consulting practice specializing in data analysis, process automation, and interactive dashboard development.
-      We help small businesses make faster, clearer decisions through agile and tailored solutions — without the complexity of large consulting firms.
+      We help small businesses make faster, clearer decisions through agile and tailored solutions, without the complexity of large consulting firms.
       Our practical experience includes projects across different business areas, focusing on turning scattered data into useful insights, automating repetitive tasks, and creating visual reports that support everyday decision-making.
       The goal is simple: fast, efficient, and customized solutions, regardless of the industry.
     </p>
@@ -127,21 +127,22 @@
 
   <div class="contact-options">
 
-    <!-- Form -->
+     <!-- Contact Form -->
     <div class="contact-card wide">
       <h3>Contact Form</h3>
-      <form action="https://formsubmit.co/contact@emalytics.pt" method="POST" class="contact-form">
-        <input type="text" name="name" placeholder="Your name" required>
-        <input type="email" name="email" placeholder="Your email" required>
-        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
+      <form id="contact-form" class="contact-form">
+          <input type="text" name="name" placeholder="Your name" required>
+          <input type="email" name="email" placeholder="Your email" required>
+          <textarea name="message" placeholder="Your message" rows="4" required></textarea>
 
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-
-        <button type="submit">Send message</button>
+          <button type="submit">Send message</button>
       </form>
-    </div>
 
+      <!-- Success message -->
+      <div id="form-success" class="form-success" style="display:none;">
+          ✔️ Thank you! Your message has been sent successfully.
+      </div>
+    </div>
     <!-- Email -->
     <div class="contact-card">
       <h3>Email</h3>
@@ -179,8 +180,13 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Emalytics. All rights reserved.</p>
+    <p>&copy; <span id="current-year"></span> Emalytics. All rights reserved.</p>
+      <div class="lang-links">
+        <a href="index.html">🇵🇹</a>
+        <a href="en.html">🇬🇧</a>
+      </div>
   </footer>
+
 
   <!-- === Tracking clicks on "View Case" buttons === -->
   <script>

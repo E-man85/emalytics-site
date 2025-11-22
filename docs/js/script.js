@@ -244,3 +244,40 @@ setInterval(() => {
   loadVisitsData();
 }, 60000);
 window.addEventListener("beforeunload", deactivateSession);
+
+/* =========================
+   Contact Form AJAX Submit
+========================= */
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contact-form");
+    if (!form) return; // evita erros noutras páginas
+
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const data = new FormData(form);
+        const url = "https://formsubmit.co/contact@emalytics.pt";
+
+        const response = await fetch(url, {
+            method: "POST",
+            body: data,
+        });
+
+        if (response.ok) {
+            document.getElementById("form-success").style.display = "block";
+            form.reset();
+        }
+    });
+});
+
+/* =========================
+   Footer Year Auto-Update
+========================= */
+document.addEventListener("DOMContentLoaded", function () {
+    const yearSpan = document.getElementById("current-year");
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+});
+
+
