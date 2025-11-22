@@ -122,31 +122,43 @@
 
 
   <!-- Contact -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>
-      For inquiries or collaborations, reach out at: 
-      <a href="mailto:EmanuelGomes@Emanlytics.onmicrosoft.com">
-        EmanuelGomes@Emanlytics.onmicrosoft.com
-      </a>
-    </p>
-    <p>
-      Connect on 
-      <a href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank" rel="noopener noreferrer">
-        LinkedIn
-      </a>
-    </p>
-    <!-- Contact Form -->
-    <form action="https://formsubmit.co/EmanuelGomes@Emanlytics.onmicrosoft.com" method="POST" class="contact-form">
-      <input type="text" name="name" placeholder="Your name" required>
-      <input type="email" name="email" placeholder="Your email" required>
-      <textarea name="message" placeholder="Your message" rows="4" required></textarea>
-      <!-- Protections -->
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <button type="submit">Send message</button>
-    </form>
-  </section>
+ <section id="contact">
+  <h2>Contact</h2>
+
+  <div class="contact-options">
+
+    <!-- Form -->
+    <div class="contact-card wide">
+      <h3>Contact Form</h3>
+      <form action="https://formsubmit.co/EmanuelGomes@Emanlytics.onmicrosoft.com" method="POST" class="contact-form">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Your email" required>
+        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
+
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <button type="submit">Send message</button>
+      </form>
+    </div>
+
+    <!-- Email -->
+    <div class="contact-card">
+      <h3>Email</h3>
+      <p>Send an email</p>
+      <a class="contact-btn" href="mailto:EmanuelGomes@Emanlytics.onmicrosoft.com">Send email</a>
+    </div>
+
+    <!-- LinkedIn -->
+    <div class="contact-card">
+      <h3>LinkedIn</h3>
+      <p>Connect with me on LinkedIn.</p>
+      <a class="contact-btn" href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank">Go to LinkedIn</a>
+    </div>
+
+  </div>
+</section>
+
 
 <!-- Online Users -->
 <section id="online-users" class="services">

@@ -120,33 +120,42 @@
 </section>
 
   <!-- Contact -->
-  <section id="contact">
-    <h2>Contacto</h2>
-    <p>
-      Para pedidos de informação ou colaborações, envie um email para:
-      <a href="mailto:EmanuelGomes@Emanlytics.onmicrosoft.com">
-        EmanuelGomes@Emanlytics.onmicrosoft.com
-      </a>
-    </p>
-    <p>
-      Ou ligue-se via
-      <a href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank" rel="noopener noreferrer">
-        LinkedIn
-      </a>
-    </p>
-    <!-- Contact Form -->
-    <form action="https://formsubmit.co/EmanuelGomes@Emanlytics.onmicrosoft.com" method="POST" class="contact-form">
-      <input type="text" name="name" placeholder="O seu nome" required>
-      <input type="email" name="email" placeholder="O seu email" required>
-      <textarea name="message" placeholder="A sua mensagem" rows="4" required></textarea>
-      <!-- Protections -->
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
 
-      <button type="submit">Enviar mensagem</button>
-    </form>
+<section id="contact">
+  <h2>Contacto</h2>
+  <div class="contact-options">
 
-  </section>
+    <!-- Formulário -->
+    <div class="contact-card wide">
+      <h3>Formulário Contacto</h3>
+      <form action="https://formsubmit.co/EmanuelGomes@Emanlytics.onmicrosoft.com" method="POST" class="contact-form">
+        <input type="text" name="name" placeholder="O seu nome" required>
+        <input type="email" name="email" placeholder="O seu email" required>
+        <textarea name="message" placeholder="A sua mensagem" rows="4" required></textarea>
+
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <button type="submit">Enviar mensagem</button>
+      </form>
+    </div>
+
+    <!-- Email -->
+    <div class="contact-card">
+      <h3>Email</h3>
+      <p>Enviar um e-mail</p>
+      <a class="contact-btn" href="mailto:EmanuelGomes@Emanlytics.onmicrosoft.com">Enviar email</a>
+    </div>
+
+    <!-- LinkedIn -->
+    <div class="contact-card">
+      <h3>LinkedIn</h3>
+      <p>Conecte-se comigo profissionalmente.</p>
+      <a class="contact-btn" href="https://www.linkedin.com/in/emanuel-gomes-001b16108" target="_blank">Ir para LinkedIn</a>
+    </div>
+
+  </div>
+</section>
 
 <!-- Online Users -->
 <section id="online-users" class="services">
