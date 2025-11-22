@@ -127,10 +127,19 @@
 
   <div class="contact-options">
 
-     <!-- Contact Form -->
+    <!-- Contact Form -->
     <div class="contact-card wide">
       <h3>Contact Form</h3>
-      <form id="contact-form" class="contact-form">
+
+      <form action="https://formsubmit.co/contact@emalytics.pt" method="POST" id="contact-form" class="contact-form">
+
+          <!-- FormSubmit config -->
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="box">
+
+          <!-- Redirect after successful submission -->
+          <input type="hidden" name="_next" value="https://emalytics.pt/en.html#success">
+
           <input type="text" name="name" placeholder="Your name" required>
           <input type="email" name="email" placeholder="Your email" required>
           <textarea name="message" placeholder="Your message" rows="4" required></textarea>
@@ -143,6 +152,7 @@
           ✔️ Thank you! Your message has been sent successfully.
       </div>
     </div>
+
     <!-- Email -->
     <div class="contact-card">
       <h3>Email</h3>

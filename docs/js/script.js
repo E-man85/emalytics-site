@@ -265,4 +265,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("form-success").style.display = "block";
     }
 });
-
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.location.hash === "#success") {
+        const box = document.getElementById("form-success");
+        if (box) box.style.display = "block";
+    }
+});
