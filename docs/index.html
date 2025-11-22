@@ -125,21 +125,23 @@
   <div class="contact-options">
 
         <!-- Form -->
-    <div class="contact-card wide">
-      <h3>Formulário Contacto</h3>
-      <form id="contact-form" class="contact-form">
-          <input type="text" name="name" placeholder="O seu nome" required>
-          <input type="email" name="email" placeholder="O seu email" required>
-          <textarea name="message" placeholder="A sua mensagem" rows="4" required></textarea>
+    <form action="https://formsubmit.co/contact@emalytics.pt" method="POST" id="contact-form" class="contact-form">
 
-          <button type="submit">Enviar mensagem</button>
-      </form>
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_next" value="https://emalytics.pt/#sucesso">
 
+        <input type="text" name="name" placeholder="O seu nome" required>
+        <input type="email" name="email" placeholder="O seu email" required>
+        <textarea name="message" placeholder="A sua mensagem" rows="4" required></textarea>
+
+        <button type="submit">Enviar mensagem</button>
+    </form>
       <!-- success message -->
-      <div id="form-success" class="form-success" style="display:none;">
-          ✔️ Obrigado! A sua mensagem foi enviada com sucesso.
-      </div>
+    <div id="form-success" style="display:none;">
+        ✔️ Obrigado! A sua mensagem foi enviada com sucesso.
     </div>
+
 
     <!-- Email -->
     <div class="contact-card">
