@@ -135,15 +135,46 @@ async function deactivateSession() {
 }
 
 // --- Update online counter ---
+let stealthCount = null;
+
 async function updateOnlineCount() {
   try {
     const res = await fetch(`${API_URL}/online-count`);
     const data = await res.json();
-    document.getElementById("online-count").textContent = data.online;
+
+    let realCount = data.online;
+
+    // If real >= 3, display the real number and exit stealth mode
+    if (realCount >= 3) {
+      stealthCount = null; // reset
+      document.getElementById("online-count").textContent = realCount;
+      return;
+    }
+
+    // --- Modo STEALTH ---
+    if (stealthCount === null) {
+      // start stealth between 3 and 5
+      stealthCount = Math.floor(Math.random() * 3) + 3;
+    } else {
+      // Smooth natural oscillation: -1, 0, or +1
+      const variation = Math.floor(Math.random() * 3) - 1;
+      stealthCount += variation;
+
+      // Keep between 3 and 6
+      if (stealthCount < 3) stealthCount = 3;
+      if (stealthCount > 6) stealthCount = 6;
+    }
+
+    // If there are real users, we naturally add them up.
+    stealthCount += realCount;
+
+    document.getElementById("online-count").textContent = stealthCount;
+
   } catch (err) {
     console.error("Error getting online count:", err);
   }
 }
+
 
 // --- Load hourly data and compute percentage ---
 async function loadVisitsData() {
