@@ -245,6 +245,21 @@ setInterval(() => {
 }, 60000);
 window.addEventListener("beforeunload", deactivateSession);
 
+// --- Heartbeat to keep session active ---
+async function heartbeat() {
+  if (!sessionId) return;
+  try {
+    await fetch(`${API_URL}/session/heartbeat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId })
+    });
+  } catch (err) {
+    console.error("Error sending heartbeat:", err);
+  }
+}
+
+setInterval(heartbeat, 30000); // 30 seconds
 
 
 /* =========================
