@@ -355,7 +355,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ${x.date ? ` • ${formatDate(x.date)}` : ""}
           </p>
           <p style="margin-bottom:14px;">${x.summary || ""}</p>
-          <a class="case-link" href="${x.url}" target="_blank" rel="noopener noreferrer">Ler artigo</a>
+          const lang = document.documentElement.lang || "pt";
+          const readLabel = lang.startsWith("en") ? "Read article" : "Ler artigo";
         </div>
       `).join("");
     } catch (err) {
