@@ -317,3 +317,54 @@ document.addEventListener("DOMContentLoaded", function () {
         if (box) box.style.display = "block";
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("news-container");
+  const emptyMsg = document.getElementById("news-empty");
+  if (!container) return;
+
+  const NEWS_URL = "https://api.emalytics.pt/published";
+
+  function formatDate(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString("pt-PT", { year: "numeric", month: "short", day: "2-digit" });
+  }
+
+  async function loadNews() {
+    try {
+      const res = await fetch(NEWS_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const items = await res.json();
+
+      if (!Array.isArray(items) || items.length === 0) {
+        emptyMsg.style.display = "block";
+        return;
+      }
+
+      items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      const top = items.slice(0, 8);
+
+      container.innerHTML = top.map((x) => `
+        <div class="card">
+          <h3 style="margin-bottom:8px;">${x.title || "Sem título"}</h3>
+          <p style="opacity:0.85; font-size:0.9rem; margin-bottom:10px;">
+            <strong>${x.source || "Fonte"}</strong>
+            ${x.date ? ` • ${formatDate(x.date)}` : ""}
+          </p>
+          <p style="margin-bottom:14px;">${x.summary || ""}</p>
+          <a class="case-link" href="${x.url}" target="_blank" rel="noopener noreferrer">Ler artigo</a>
+        </div>
+      `).join("");
+    } catch (err) {
+      console.error("Erro a carregar notícias:", err);
+      emptyMsg.textContent = "Não foi possível carregar as notícias agora.";
+      emptyMsg.style.display = "block";
+    }
+  }
+
+  loadNews();
+});
+
