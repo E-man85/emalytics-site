@@ -318,7 +318,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-
+/* =========================
+   news
+========================= */
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("news-container");
   const emptyMsg = document.getElementById("news-empty");
@@ -326,52 +328,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const NEWS_URL = "https://news.emalytics.pt/published";
 
+  const lang = document.documentElement.lang || "pt";
+  const readLabel = lang.startsWith("en") ? "Read article" : "Ler artigo";
+  const errorLabel = lang.startsWith("en")
+    ? "Unable to load news right now."
+    : "Não foi possível carregar as notícias agora.";
+
   function formatDate(dateStr) {
     if (!dateStr) return "";
     const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return dateStr;
-    return d.toLocaleDateString("pt-PT", { year: "numeric", month: "short", day: "2-digit" });
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleDateString(lang, { year: "numeric", month: "short", day: "2-digit" });
+  }
+
+  function cleanSummary(s) {
+    if (!s) return "";
+    // remove aquele “The post ... appeared first...” (comum no Towards Data Science)
+    return s.replace(/The post .*? appeared first on .*?\.\.\.$/i, "").trim();
   }
 
   async function loadNews() {
     try {
       const res = await fetch(NEWS_URL, { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const items = await res.json();
 
+      const items = await res.json();
       if (!Array.isArray(items) || items.length === 0) {
         emptyMsg.style.display = "block";
         return;
       }
 
+      // ordenar por data desc (mais recente primeiro)
       items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-      items.sort((a, b) => new Date(b.date) - new Date(a.date));
       const top = items.slice(0, 8);
 
-      const lang = document.documentElement.lang || "pt";
-      const readLabel = lang.startsWith("en") ? "Read article" : "Ler artigo";
-
-      container.innerHTML = top.map(x => `
-        <div class="card">
-          <h3>${x.title}</h3>
-          <p style="opacity:.85;font-size:.9rem;">
-            <strong>${x.source}</strong>
-            ${x.date ? " • " + formatDate(x.date) : ""}
-          </p>
-          <p>${x.summary}</p>
-          <a class="case-link" href="${x.url}" target="_blank" rel="noopener noreferrer">
-            ${readLabel}
-          </a>
-        </div>
-      `).join("");
-
+      container.innerHTML = top
+        .map(
+          (x) => `
+          <div class="card">
+            <h3>${x.title || ""}</h3>
+            <p style="opacity:.85;font-size:.9rem;">
+              <strong>${x.source || ""}</strong>
+              ${x.date ? " • " + formatDate(x.date) : ""}
+            </p>
+            <p>${cleanSummary(x.summary) || ""}</p>
+            <a class="case-link" href="${x.url}" target="_blank" rel="noopener noreferrer">
+              ${readLabel}
+            </a>
+          </div>
+        `
+        )
+        .join("");
     } catch (err) {
       console.error("Erro a carregar notícias:", err);
-      emptyMsg.textContent = "Não foi possível carregar as notícias agora.";
+      emptyMsg.textContent = errorLabel;
       emptyMsg.style.display = "block";
     }
   }
 
   loadNews();
 });
-
