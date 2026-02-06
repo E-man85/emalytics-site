@@ -345,20 +345,26 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      items.sort((a, b) => new Date(b.date) - new Date(a.date));
       const top = items.slice(0, 8);
 
-      container.innerHTML = top.map((x) => `
+      const lang = document.documentElement.lang || "pt";
+      const readLabel = lang.startsWith("en") ? "Read article" : "Ler artigo";
+
+      container.innerHTML = top.map(x => `
         <div class="card">
-          <h3 style="margin-bottom:8px;">${x.title || "Sem título"}</h3>
-          <p style="opacity:0.85; font-size:0.9rem; margin-bottom:10px;">
-            <strong>${x.source || "Fonte"}</strong>
-            ${x.date ? ` • ${formatDate(x.date)}` : ""}
+          <h3>${x.title}</h3>
+          <p style="opacity:.85;font-size:.9rem;">
+            <strong>${x.source}</strong>
+            ${x.date ? " • " + formatDate(x.date) : ""}
           </p>
-          <p style="margin-bottom:14px;">${x.summary || ""}</p>
-          const lang = document.documentElement.lang || "pt";
-          const readLabel = lang.startsWith("en") ? "Read article" : "Ler artigo";
+          <p>${x.summary}</p>
+          <a class="case-link" href="${x.url}" target="_blank" rel="noopener noreferrer">
+            ${readLabel}
+          </a>
         </div>
       `).join("");
+
     } catch (err) {
       console.error("Erro a carregar notícias:", err);
       emptyMsg.textContent = "Não foi possível carregar as notícias agora.";
