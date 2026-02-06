@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const emptyMsg = document.getElementById("news-empty");
   if (!container) return;
 
-  const NEWS_URL = "https://api.emalytics.pt/published";
+  const NEWS_URL = "https://news.emalytics.pt/published";
 
   function formatDate(dateStr) {
     if (!dateStr) return "";
