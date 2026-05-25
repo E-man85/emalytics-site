@@ -135,34 +135,30 @@
   </div>
 </section>
 
-
-  <!-- Contact -->
- <section id="contact">
+<!-- Contact -->
+<section id="contact">
   <h2>Contact</h2>
 
   <div class="contact-options">
 
-    <!-- Contact Form -->
-    <div class="contact-card wide">
-      <h3>Contact Form</h3>
-
+    <!-- Form -->
     <form action="https://api.web3forms.com/submit" method="POST" id="contact-form-en" class="contact-form">
 
-        <input type="hidden" name="access_key" value="66cf719c-75f9-47f3-8983-ceba5770800f">
+      <input type="hidden" name="access_key" value="66cf719c-75f9-47f3-8983-ceba5770800f">
 
-        <input type="hidden" name="subject" value="New contact from Emalytics website">
-        <input type="hidden" name="from_name" value="Emalytics Website">
-        <input type="hidden" name="redirect" value="https://emalytics.pt/en.html#success">
+      <input type="hidden" name="subject" value="New contact from Emalytics website">
+      <input type="hidden" name="from_name" value="Emalytics Website">
+      <input type="hidden" name="redirect" value="https://emalytics.pt/en.html#success">
 
-        <input type="text" name="name" placeholder="Your name" required>
-        <input type="email" name="email" placeholder="Your email" required>
-        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
+      <input type="text" name="name" placeholder="Your name" required>
+      <input type="email" name="email" placeholder="Your email" required>
+      <textarea name="message" placeholder="Your message" rows="4" required></textarea>
 
-        <button type="submit">Send message</button>
+      <button type="submit">Send message</button>
     </form>
 
-    <div id="form-success" class="form-success" style="display:none;">
-        ✔️ Thank you! Your message has been sent successfully.
+    <div id="form-success" style="display:none;">
+      ✔️ Thank you! Your message has been sent successfully.
     </div>
 
     <!-- Email -->
@@ -209,7 +205,6 @@
       </div>
   </footer>
 
-
   <!-- === Tracking clicks on "View Case" buttons === -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -251,7 +246,7 @@
   </script>
   <script src="js/script.js?v=4" defer></script>
 
-    <script>
+  <script>
     if (window.location.hash === "#sucesso" || window.location.hash === "#success") {
       const successMessage = document.getElementById("form-success");
       if (successMessage) {
