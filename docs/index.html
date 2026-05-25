@@ -142,11 +142,13 @@
   <div class="contact-options">
 
         <!-- Form -->
-    <form action="https://formsubmit.co/contact@emalytics.pt" method="POST" id="contact-form" class="contact-form">
+    <form action="https://api.web3forms.com/submit" method="POST" id="contact-form-pt" class="contact-form">
 
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_next" value="https://emalytics.pt/#sucesso">
+        <input type="hidden" name="access_key" value="66cf719c-75f9-47f3-8983-ceba5770800f">
+
+        <input type="hidden" name="subject" value="Novo contacto através do site Emalytics">
+        <input type="hidden" name="from_name" value="Emalytics Website">
+        <input type="hidden" name="redirect" value="https://emalytics.pt/#sucesso">
 
         <input type="text" name="name" placeholder="O seu nome" required>
         <input type="email" name="email" placeholder="O seu email" required>
@@ -154,7 +156,7 @@
 
         <button type="submit">Enviar mensagem</button>
     </form>
-      <!-- success message -->
+
     <div id="form-success" style="display:none;">
         ✔️ Obrigado! A sua mensagem foi enviada com sucesso.
     </div>
@@ -237,6 +239,15 @@
     ];
   </script>
   <script src="js/script.js?v=2" defer></script>
+
+  <script>
+    if (window.location.hash === "#sucesso" || window.location.hash === "#success") {
+      const successMessage = document.getElementById("form-success");
+      if (successMessage) {
+        successMessage.style.display = "block";
+      }
+    }
+  </script>
 </body>
 </html>
 
