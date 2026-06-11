@@ -11,15 +11,220 @@
       background: #f5f5f5;
       text-align: center;
     }
-    iframe {
+    .dashboard-container {
       width: 95%;
-      height: 90vh;
+      margin: 10px auto 20px auto;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .dashboard-frame {
+      width: 100%;
+      height: 650px;
       border: none;
-      margin-top: 10px;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .logout {
+      margin: 20px auto 30px auto;
+    }
+
+    .logout button {
+      background: #333;
+      color: white;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .logout button:hover {
+      background: #111;
     }
     .logout {
       margin-top: 10px;
     }
+    /* ############################################ */
+    .demo-materials {
+      width: 95%;
+      max-width: 1100px;
+      margin: 25px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .demo-materials h3 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .materials-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .video-section {
+      width: 100%;
+      text-align: center;
+    }
+
+    .propostas-section {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+      border-top: 1px solid #e5e5e5;
+      padding-top: 25px;
+    }
+
+    .propostas-section h4 {
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .propostas-section p {
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .propostas-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .propostas-buttons a {
+      background: #0078d4;
+      color: white;
+      padding: 11px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .propostas-buttons a:hover {
+      background: #005ea6;
+    }
+
+    .mobile-preview {
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone-frame {
+      width: 260px;
+      height: 520px;
+      background: #111;
+      border-radius: 34px;
+      padding: 14px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: #f5f5f5;
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+        .phone-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      border-radius: 24px;
+      display: block;
+    }
+
+    .phone-content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .phone-content h4 {
+      margin-top: 0;
+      color: #0078d4;
+    }
+
+    .phone-content p {
+      font-size: 14px;
+      color: #444;
+    }
+
+    .phone-button {
+      display: inline-block;
+      margin-top: 12px;
+      background: #0078d4;
+      color: white;
+      padding: 11px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .phone-button:hover {
+      background: #005ea6;
+    }
+
+
+
+    .pdf-section h4 {
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .pdf-section p {
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .pdf-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .pdf-buttons a {
+      background: #0078d4;
+      color: white;
+      padding: 11px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .pdf-buttons a:hover {
+      background: #005ea6;
+    }
+
+    @media (max-width: 800px) {
+      .materials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pdf-section {
+        text-align: center;
+      }
+
+      .pdf-buttons {
+        justify-content: center;
+      }
+    }
+    /* ############################################ */
   </style>
 </head>
 <body>
@@ -32,40 +237,6 @@
 
   <h2>Dashboard de Demonstração (dados fictícios)</h2>
   <h3 id="countdown" style="text-align:center; color:#0078d4; font-family:Arial; margin-top:10px;"></h3>
-<!-- 
-<script>
-// Data e hora alvo (formato: "YYYY-MM-DDTHH:MM:SS")
-const endTime = new Date("2025-10-14T15:00:00").getTime();
-
-const countdownElement = document.getElementById("countdown");
-
-function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = endTime - now;
-
-  if (distance <= 0) {
-    countdownElement.innerHTML = "⏰ A demonstração terminou.";
-    // Opcional: bloqueia o dashboard quando termina
-    document.body.innerHTML = "<h2 style='text-align:center; color:red; margin-top:100px;'>A demonstração expirou. Contacte-nos para mais informações.</h2>";
-    return;
-  }
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  let text = "⏳ Demonstração termina em ";
-  if (days > 0) text += `${days}d `;
-  text += `${hours}h ${minutes}m ${seconds}s`;
-
-  countdownElement.innerHTML = text;
-}
-
-setInterval(updateCountdown, 1000);
-updateCountdown();
-</script> -->
-<h3 id="countdown" style="text-align:center; color:#0078d4; font-family:Arial; margin-top:10px;"></h3>
 
 <!-- 🔽 Camada opaca (inicialmente escondida) -->
 <div id="overlay"
@@ -121,11 +292,72 @@ updateCountdown();
 
   <!-- link Power BI publicado -->
   <!-- <iframe title="v1" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMmMwYzUwM2YtMTg1NC00YTRhLTgyZTItMjRkN2IzMWQ5YTk4IiwidCI6IjdlNGRmNWJmLTJkNWQtNDIzYy1iYzliLTRlY2I4ODA2Y2Q4MiIsImMiOjl9" frameborder="0" allowFullScreen="true"></iframe> -->
-   <iframe title="v1_pbi" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMDFiNDMxNmQtOTdjNy00OTIwLTlmZmYtMTk2MzA3MGMwZDU4IiwidCI6IjdlNGRmNWJmLTJkNWQtNDIzYy1iYzliLTRlY2I4ODA2Y2Q4MiIsImMiOjl9" frameborder="0" allowFullScreen="true"></iframe>
-  <div class="logout">
-    <button onclick="logout()">Terminar sessão</button>
+  <div class="dashboard-container">
+    <iframe 
+    class="dashboard-frame"
+    title="v1_pbi" 
+    src="https://app.powerbi.com/view?r=eyJrIjoiMDFiNDMxNmQtOTdjNy00OTIwLTlmZmYtMTk2MzA3MGMwZDU4IiwidCI6IjdlNGRmNWJmLTJkNWQtNDIzYy1iYzliLTRlY2I4ODA2Y2Q4MiIsImMiOjl9" 
+    allowFullScreen="true">
+    </iframe>
   </div>
+        <!-- ############ -->
+  <div class="demo-materials">
+    <h3>Demostração Mobile</h3>
 
+    <p>
+      Video curto da versão mobile do dashboard.
+    </p>
+
+    <div class="materials-grid">
+
+      <!-- Vídeo mobile -->
+      <div class="mobile-preview">
+        <div class="phone-frame">
+          <div class="phone-screen">
+
+            <video
+              class="phone-video"
+              src="https://emanlytics-my.sharepoint.com/personal/emanuelgomes_emalytics_pt/_layouts/15/download.aspx?share=IQBG4XIhpkHwQ4pLdvZkD3uHASKUjz7W-jQslvNQh88ce2I"
+              controls
+              preload="metadata"
+              muted
+              playsinline>
+              O seu navegador não suporta a reprodução de vídeo.
+            </video>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- PDFs -->
+      <div class="pdf-section">
+        <h4>Documentos PDF</h4>
+
+        <!-- <p>
+          Descarregar propostas.
+        </p> -->
+
+        <div class="pdf-buttons">
+          <a 
+            href="https://emanlytics-my.sharepoint.com/:b:/g/personal/emanuelgomes_emalytics_pt/IQAhlwVp5PCYSov_V4EcxhFRAe1cgFE4ECd-TKymYed7_Bs?e=A4CeWN"
+            target="_blank">
+            VER PROPOSTA 1
+          </a>
+
+          <a 
+            href="https://emanlytics-my.sharepoint.com/:b:/g/personal/emanuelgomes_emalytics_pt/IQDsKJAtFj_dRplOVr9E8B8PAXr3kWVe--mtnBjmVQauNR4?e=pbEoSR"
+            target="_blank">
+            VER PROPOSTA 2
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ############ -->
+    <div class="logout">
+      <button onclick="logout()">Terminar sessão</button>
+    </div>
   <script>
     function logout() {
       sessionStorage.removeItem("acessoAutorizado");
