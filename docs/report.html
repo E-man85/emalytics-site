@@ -179,8 +179,6 @@
       background: #005ea6;
     }
 
-
-
     .pdf-section h4 {
       color: #333;
       margin-bottom: 8px;
@@ -212,8 +210,8 @@
     }
 
     @media (max-width: 800px) {
-      .materials-grid {
-        grid-template-columns: 1fr;
+      .materials-stack {
+        gap: 25px;
       }
 
       .pdf-section {
@@ -224,7 +222,51 @@
         justify-content: center;
       }
     }
-    /* ############################################ */
+      /* countdown propostas */
+    .proposal-list {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .proposal-card {
+      min-width: 210px;
+      text-align: center;
+    }
+
+    .proposal-card a {
+      display: inline-block;
+      background: #0078d4;
+      color: white;
+      padding: 11px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .proposal-card a:hover {
+      background: #005ea6;
+    }
+
+    .proposal-countdown {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #0078d4;
+      font-weight: bold;
+    }
+
+    .proposal-countdown.expired {
+      color: #d32f2f;
+    }
+    .proposal-card a.disabled {
+      background: #bdbdbd;
+      color: #666;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
   </style>
 </head>
 <body>
@@ -254,40 +296,105 @@
        padding-top:150px;
      ">
   <h2 style="color:#d32f2f;">⏰ A demonstração expirou</h2>
-  <p style="font-size:1.1em;">Contacte-nos para mais informações ou para agendar uma nova sessão.</p>
+
+  <p style="font-size:1.1em;">
+    Contacte-nos para mais informações ou para agendar uma nova sessão.
+  </p>
+
+  <p style="font-size:1.1em;">
+    Email:
+    <a href="mailto:contact@emalytics.pt" style="color:#0078d4; font-weight:bold; text-decoration:none;">
+      contact@emalytics.pt
+    </a>
+  </p>
 </div>
 
 <script>
-// Define a data e hora alvo (ex: 14/10/2025 às 18:00)
-const endTime = new Date("2026-07-10T23:59:59").getTime();
-const countdownElement = document.getElementById("countdown");
-const overlay = document.getElementById("overlay");
+  // ==========================
+  // Contador principal da demo
+  // ==========================
+  const endTime = new Date("2026-07-12T23:59:59").getTime();
+  const countdownElement = document.getElementById("countdown");
+  const overlay = document.getElementById("overlay");
 
-function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = endTime - now;
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = endTime - now;
 
-  if (distance <= 0) {
-    // Mostra a camada opaca e termina o contador
-    overlay.style.display = "block";
-    countdownElement.innerHTML = "⏰ A demonstração terminou.";
-    return;
+    if (distance <= 0) {
+      overlay.style.display = "block";
+      countdownElement.innerHTML = "⏰ A demonstração terminou.";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    let text = "⏳ Demonstração termina em ";
+    if (days > 0) text += `${days}d `;
+    text += `${hours}h ${minutes}m ${seconds}s`;
+
+    countdownElement.innerHTML = text;
   }
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 
-  let text = "⏳ Demonstração termina em ";
-  if (days > 0) text += `${days}d `;
-  text += `${hours}h ${minutes}m ${seconds}s`;
 
-  countdownElement.innerHTML = text;
-}
+  // ==========================
+  // Contadores das propostas
+  // ==========================
+    function startProposalCountdown(elementId, linkId, endDateText) {
+      const element = document.getElementById(elementId);
+      const link = document.getElementById(linkId);
 
-setInterval(updateCountdown, 1000);
-updateCountdown();
+      if (!element || !link) {
+        return;
+      }
+
+      const endDate = new Date(endDateText).getTime();
+
+      function blockProposal() {
+        element.innerHTML = "⏰ Prazo terminado";
+        element.classList.add("expired");
+
+        link.classList.add("disabled");
+        link.removeAttribute("href");
+        link.removeAttribute("target");
+        link.innerHTML = "PROPOSTA EXPIRADA";
+      }
+
+      function updateProposalCountdown() {
+        const now = new Date().getTime();
+        const distance = endDate - now;
+
+        if (distance <= 0) {
+          blockProposal();
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        let text = "Prazo: ";
+        if (days > 0) text += `${days}d `;
+        text += `${hours}h ${minutes}m ${seconds}s`;
+
+        element.innerHTML = text;
+      }
+
+      setInterval(updateProposalCountdown, 1000);
+      updateProposalCountdown();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      startProposalCountdown("countdown-proposta-1", "link-proposta-1", "2026-07-10T19:20:59");
+      startProposalCountdown("countdown-proposta-2", "link-proposta-2", "2026-07-11T16:25:59");
+    });
 </script>
 
   <!-- link Power BI publicado -->
@@ -300,15 +407,14 @@ updateCountdown();
     allowFullScreen="true">
     </iframe>
   </div>
-        <!-- ############ -->
   <div class="demo-materials">
-    <h3>Demostração Mobile</h3>
+    <h3>Demonstração Mobile</h3>
 
     <p>
-      Video curto da versão mobile do dashboard.
+      Versão mobile do dashboard em vídeo.
     </p>
 
-    <div class="materials-grid">
+    <div class="materials-stack">
 
       <!-- Vídeo mobile -->
       <div class="mobile-preview">
@@ -337,7 +443,7 @@ updateCountdown();
           Descarregar propostas.
         </p> -->
 
-        <div class="pdf-buttons">
+        <!-- <div class="pdf-buttons">
           <a 
             href="https://emanlytics-my.sharepoint.com/:b:/g/personal/emanuelgomes_emalytics_pt/IQAhlwVp5PCYSov_V4EcxhFRAe1cgFE4ECd-TKymYed7_Bs?e=A4CeWN"
             target="_blank">
@@ -349,12 +455,35 @@ updateCountdown();
             target="_blank">
             VER PROPOSTA 2
           </a>
+        </div> -->
+        <div class="proposal-list">
+
+          <div class="proposal-card">
+            <a 
+              id="link-proposta-1"
+              href="https://emanlytics-my.sharepoint.com/:b:/g/personal/emanuelgomes_emalytics_pt/IQAhlwVp5PCYSov_V4EcxhFRAe1cgFE4ECd-TKymYed7_Bs?e=A4CeWN"
+              target="_blank">
+              VER PROPOSTA 1
+            </a>
+            <div id="countdown-proposta-1" class="proposal-countdown"></div>
+          </div>
+
+          <div class="proposal-card">
+            <a
+              id="link-proposta-2"
+              href="https://emanlytics-my.sharepoint.com/:b:/g/personal/emanuelgomes_emalytics_pt/IQDsKJAtFj_dRplOVr9E8B8PAXr3kWVe--mtnBjmVQauNR4?e=pbEoSR"
+              target="_blank">
+              VER PROPOSTA 2
+            </a>
+            <div id="countdown-proposta-2" class="proposal-countdown"></div>
+          </div>
+
         </div>
       </div>
 
     </div>
   </div>
-  <!-- ############ -->
+
     <div class="logout">
       <button onclick="logout()">Terminar sessão</button>
     </div>
